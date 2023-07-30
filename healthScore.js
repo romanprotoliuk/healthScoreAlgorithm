@@ -5,8 +5,9 @@ const { calculateBloodPressureScore } = require("./CardiovascularAndMetabolicHea
 const { calculateGlucoseLevelsScore } = require("./CardiovascularAndMetabolicHealth/calculateGlucoseLevelScore")
 const { calculateAlcoholScore } = require("./LifestyleAndHabits/calculateAlcoholScore")
 const { calculatePhysicalActivityScore } = require("./LifestyleAndHabits/calculatePhysicalActivityScore")
+const { calculateSleepScore } = require("./LifestyleAndHabits/calculateSleepScore")
 
-module.exports.getHealthScore = function getHealthScore(age, gender, weight, height, systolicBP, diastolicBP, smokingStatus, glucoseLevels, alcoholConsumption, activityData, weightUnit = 'kg', heightUnit = 'cm', inches = 0) {
+module.exports.getHealthScore = function getHealthScore(age, gender, weight, height, systolicBP, diastolicBP, smokingStatus, glucoseLevels, alcoholConsumption, activityData, sleepData, weightUnit = 'kg', heightUnit = 'cm', inches = 0) {
     // Validations
     if (age === undefined || gender === undefined || weight === undefined || height === undefined || systolicBP === undefined || diastolicBP === undefined || smokingStatus === undefined || glucoseLevels === undefined) {
         throw new Error("All parameters must be provided.");
@@ -26,11 +27,11 @@ module.exports.getHealthScore = function getHealthScore(age, gender, weight, hei
     const glucoseResult = calculateGlucoseLevelsScore(glucoseLevels);
     const alcoholResult = calculateAlcoholScore(alcoholConsumption)
     const physicalActivityResult = calculatePhysicalActivityScore(activityData); 
+    const sleepResult = calculateSleepScore(sleepData);
 
-    const weights = getWeights(age, gender, alcoholConsumption);
+    const weights = getWeights(age, gender, alcoholConsumption, sleepResult.averageSleepDuration, sleepResult.sleepQuality);
 
-    // const finalScore = Math.round((bmiResult.score * weights.bmi + bloodPressureResult.score * weights.bloodPressure + smokingResult.score * weights.smoking + glucoseResult.score * weights.glucose + alcoholResult.score * weights.alcohol) / (weights.bmi + weights.bloodPressure + weights.smoking + weights.glucose + weights.alcohol));
-    const finalScore = Math.round((bmiResult.score * weights.bmi + bloodPressureResult.score * weights.bloodPressure + smokingResult.score * weights.smoking + glucoseResult.score * weights.glucose + alcoholResult.score * weights.alcohol + physicalActivityResult.score * weights.activity) / (weights.bmi + weights.bloodPressure + weights.smoking + weights.glucose + weights.alcohol + weights.activity));
+    const finalScore = Math.round((bmiResult.score * weights.bmi + bloodPressureResult.score * weights.bloodPressure + smokingResult.score * weights.smoking + glucoseResult.score * weights.glucose + alcoholResult.score * weights.alcohol + physicalActivityResult.score * weights.activity + sleepResult.sleepScore * weights.sleep) / (weights.bmi + weights.bloodPressure + weights.smoking + weights.glucose + weights.alcohol + weights.activity + weights.sleep));
 
     return {
         finalScore,
@@ -73,6 +74,15 @@ module.exports.getHealthScore = function getHealthScore(age, gender, weight, hei
                 recoveryTime: activityData.recoveryTime,
                 score: physicalActivityResult.score,
                 description: physicalActivityResult.description
+            },
+            sleep: {
+                averageSleepDuration: sleepResult.averageSleepDuration,
+                averageRemTime: sleepResult.averageRemTime,
+                averageDeepTime: sleepResult.averageDeepTime,
+                averageRestingHeartRate: sleepResult.averageRestingHeartRate,
+                averageHeartRateVariability: sleepResult.averageHeartRateVariability,
+                sleepQuality: sleepResult.sleepQuality,
+                score: sleepResult.sleepScore
             }
         }
     };
