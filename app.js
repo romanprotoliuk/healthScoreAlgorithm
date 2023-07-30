@@ -118,6 +118,14 @@ const sampleActivityData = {
     ],
   };
   
+
+  const userData2 = {
+    dietType: 'vegetarian',
+    mealPortions: 'small',
+    junkFoodIntake: 'rarely',
+    hydration: 0.6,
+    addedSugarsIntake: 0.03,
+  };
   
   const sampleData = {
     age: 30,
@@ -130,7 +138,8 @@ const sampleActivityData = {
     glucoseLevels: 90, // mg/dL
     alcoholConsumption: 20, // %
     activityData: sampleActivityData,
-    sleepData: sampleSleepData
+    sleepData: sampleSleepData,
+    dietaryHabitsData: userData2
   };
   
   const result = getHealthScore(
@@ -144,7 +153,8 @@ const sampleActivityData = {
     sampleData.glucoseLevels,
     sampleData.alcoholConsumption,
     sampleData.activityData,
-    sampleData.sleepData
+    sampleData.sleepData,
+    sampleData.dietaryHabitsData
   );
   
   console.log(result);

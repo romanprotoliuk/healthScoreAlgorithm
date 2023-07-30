@@ -32,9 +32,9 @@ exports.calculateBmiAndScore = function calculateBmiAndScore(weight, height, wei
         throw new Error("Invalid height unit. Expected 'cm', 'm', or 'ft'.");
     }
 
-    const bmi = weight / (heightInMeters * heightInMeters);
+    const bmi = Math.floor((weight / (heightInMeters * heightInMeters)) * 10) / 10;
 
-    const score = Math.max(0, Math.min(100, 100 - (bmi - 18.5) * 2));
+    const score = Math.floor((Math.max(0, Math.min(100, 100 - (bmi - 18.5) * 2)))* 10) / 10;
     const isNormal = (bmi >= 18.5 && bmi <= 24.9);
 
     return { bmi, score, isNormal };

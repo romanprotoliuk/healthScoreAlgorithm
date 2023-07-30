@@ -26,7 +26,8 @@ exports.getWeights = function (age, gender, alcoholConsumption, averageSleepDura
         glucose: 0.3, 
         alcohol: 0.2,
         activity: 0.35,
-        sleep: 0.25 // New weight for sleep-related factors
+        sleep: 0.25,
+        diet: 0.35
     };
 
     // Age-based adjustments

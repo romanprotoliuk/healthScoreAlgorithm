@@ -25,26 +25,49 @@ exports.calculateSleepScore = function calculateSleepScore(sleepData) {
     }
 
     const averageTotalTime = totalSleepTimeSum / numNights; // Average total sleep time in minutes
-    const averageRemTime = remSleepTimeSum / numNights; // Average time spent in REM sleep in minutes
-    const averageDeepTime = deepSleepTimeSum / numNights; // Average time spent in deep sleep in minutes
-    const averageRestingHeartRate = restingHeartRateSum / numNights; // Average resting heart rate during sleep in bpm
-    const averageHeartRateVariability = heartRateVariabilitySum / numNights; // Average heart rate variability during sleep in ms
+    const averageRemTime = Math.floor((remSleepTimeSum / numNights) * 10) / 10; // Average time spent in REM sleep in minutes
+    
+    const averageDeepTime = Math.floor((deepSleepTimeSum / numNights) * 10) / 10; // Average time spent in deep sleep in minutes
+    const averageRestingHeartRate = Math.floor((restingHeartRateSum / numNights) * 10) / 10; // Average resting heart rate during sleep in bpm
+    const averageHeartRateVariability = Math.floor((heartRateVariabilitySum / numNights) * 10) / 10; // Average heart rate variability during sleep in ms
 
     // Calculate average sleep duration in hours
-    const averageSleepDuration = averageTotalTime / 60;
+    // const averageSleepDuration = parseFloat(Math.round(averageTotalTime / 60).toFixed(2))
+    const averageSleepDuration = Math.floor((averageTotalTime / 60) * 10) / 10;
+
 
     // Calculate sleep quality based on REM and deep sleep times
     const averageSleepQuality = (averageRemTime + averageDeepTime) / averageTotalTime; // Normalize the sleep quality to a value between 0 and 1
 
+      // Define sleep quality ranges and corresponding labels
+      const sleepQualityRanges = [
+        { label: "Excellent", min: 0.9, max: 1.0 },
+        { label: "Good", min: 0.75, max: 0.9 },
+        { label: "Fair", min: 0.5, max: 0.75 },
+        { label: "Poor", min: 0.25, max: 0.5 },
+        { label: "Very Poor", min: 0, max: 0.25 }
+    ];
+
+    // Find the sleep quality label based on sleep quality value
+    let sleepQualityLabel;
+    for (const range of sleepQualityRanges) {
+        if (averageSleepQuality >= range.min && averageSleepQuality <= range.max) {
+            sleepQualityLabel = range.label;
+            break;
+        }
+    }
+
     // Calculate the Sleep Score based on the weekly averages
-    // Add your scoring logic here based on the calculated averages
-    // For demonstration purposes, we will use a simple linear scoring approach
+    // logic here based on the calculated averages
+    // linear approach
     const totalTimeScore = Math.min(100, (averageTotalTime / 480) * 100); // Normalize to 8 hours as the target
     const remTimeScore = Math.min(100, (averageRemTime / 90) * 100); // Normalize to 90 minutes as the target
     const deepTimeScore = Math.min(100, (averageDeepTime / 120) * 100); // Normalize to 120 minutes as the target
     const restingHeartRateScore = Math.min(100, 100 - (averageRestingHeartRate - 60)); // Lower heart rate is better
     const heartRateVariabilityScore = Math.min(100, (averageHeartRateVariability / 10) * 100); // Normalize to 10 ms as the target
     const sleepQualityScore = Math.min(100, averageSleepQuality * 100); // Normalize sleep quality to a score out of 100
+
+    // Math.round(duration * 100) / 100; 
 
     // Calculate the overall sleep score using equal weightage for each component
     const sleepScore = Math.round((totalTimeScore + remTimeScore + deepTimeScore + restingHeartRateScore + heartRateVariabilityScore + sleepQualityScore) / 6);
@@ -57,6 +80,7 @@ exports.calculateSleepScore = function calculateSleepScore(sleepData) {
         averageDeepTime,
         averageRestingHeartRate,
         averageHeartRateVariability,
-        sleepQuality: averageSleepQuality // Provide the normalized sleep quality value between 0 and 1
+        sleepQuality: Math.round(averageSleepQuality * 100), // Provide the normalized sleep quality value between 0 and 1
+        sleepQualityLabel
     };
 };
