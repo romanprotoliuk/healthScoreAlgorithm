@@ -12,7 +12,7 @@ exports.calculateSmokingScore = function calculateSmokingScore(smokingStatus) {
     return smokingScores[smokingStatus];
 };
 
-// // Testing the function with valid and invalid inputs
+// Testing the function with valid and invalid inputs
 // console.log(calculateSmokingScore('non-smoker'));
 // // Outputs: { score: 100, isNormal: true }
 
