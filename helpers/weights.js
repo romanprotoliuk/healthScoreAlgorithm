@@ -1,4 +1,4 @@
-exports.getWeights = function (age, gender) {
+exports.getWeights = function (age, gender, alcoholConsumption) {
     if (age < 0 || age > 120) {
         throw new Error('Invalid age. Age must be between 0 and 120.');
     }
@@ -6,10 +6,18 @@ exports.getWeights = function (age, gender) {
         throw new Error('Invalid gender. Gender must be either "male" or "female".');
     }
 
+    if (alcoholConsumption === undefined || typeof alcoholConsumption !== 'number' || alcoholConsumption < 0 || alcoholConsumption > 100) {
+        throw new Error('Invalid alcohol consumption. Alcohol consumption must be a number between 0 and 100.');
+    }
+
+
     let weights = {
         bmi: 0.3,
         bloodPressure: 0.4,
         smoking: 0.3,
+        glucose: 0.3, 
+        alcohol: 0.2,
+        activity: 0.35
     };
 
     if (age < 18) {
@@ -34,8 +42,15 @@ exports.getWeights = function (age, gender) {
         weights.smoking -= 0.1;
     }
 
+    if (gender === 'male') {
+        weights.alcohol += alcoholConsumption * 0.005;
+    } else if (gender === 'female') {
+        weights.alcohol += alcoholConsumption * 0.01;
+    }
+
     return weights;
 };
+
 
 
 // // Testing the function with valid and invalid inputs
