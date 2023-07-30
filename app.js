@@ -1,4 +1,8 @@
 const { getHealthScore } = require('./PhysicalHealth/healthScore');
 
-console.log(getHealthScore(24, 188, 5, [110, 70], "non-smoker", 'lbs', 'ft', 11));
+
+
+const score = getHealthScore(24, 'male', 70, 170, 120, 80, 'non-smoker')
+// console.log(getHealthScore(24, 'male', 70, 170, 120, 80, 'non-smoker'));
+console.log(score.details.bloodPressure)
 
