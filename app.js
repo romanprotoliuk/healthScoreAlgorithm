@@ -126,6 +126,16 @@ const sampleActivityData = {
     hydration: 0.6,
     addedSugarsIntake: 0.03,
   };
+
+  const stressData = {
+    dailyRoutine: 9,
+    emotionalWellBeing: 9,
+    socialSupport: 8,
+    workRelatedStress: 8,
+    stressCopingMechanisms: 10,
+    lifeEvents: 8,
+    stressPerception: 7,
+  };
   
   const sampleData = {
     age: 30,
@@ -139,9 +149,12 @@ const sampleActivityData = {
     alcoholConsumption: 20, // %
     activityData: sampleActivityData,
     sleepData: sampleSleepData,
-    dietaryHabitsData: userData2
+    dietaryHabitsData: userData2,
+    stressLevelData: stressData
   };
   
+
+
   const result = getHealthScore(
     sampleData.age,
     sampleData.gender,
@@ -154,7 +167,8 @@ const sampleActivityData = {
     sampleData.alcoholConsumption,
     sampleData.activityData,
     sampleData.sleepData,
-    sampleData.dietaryHabitsData
+    sampleData.dietaryHabitsData,
+    sampleData.stressLevelData
   );
   
   console.log(result);

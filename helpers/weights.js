@@ -27,7 +27,8 @@ exports.getWeights = function (age, gender, alcoholConsumption, averageSleepDura
         alcohol: 0.2,
         activity: 0.35,
         sleep: 0.25,
-        diet: 0.35
+        diet: 0.35,
+        stress: 0.23
     };
 
     // Age-based adjustments
