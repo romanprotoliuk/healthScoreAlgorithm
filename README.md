@@ -1,3 +1,5 @@
+# ❌OUDATED❌
+
 # healthScoreAlgorithm
 
 A continuous scoring system, also known as a cardinal scoring system, is often advantageous in health assessment algorithms because it provides a more nuanced and precise measure of health status compared to a categorical scoring system.
