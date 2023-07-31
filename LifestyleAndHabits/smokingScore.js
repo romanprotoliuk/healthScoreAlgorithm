@@ -1,15 +1,17 @@
 exports.calculateSmokingScore = function calculateSmokingScore(smokingStatus) {
-    const smokingScores = {
-        'non-smoker': { score: 100, isNormal: true },
-        'ex-smoker': { score: 70, isNormal: false },
-        'current-smoker': { score: 0, isNormal: false }
-    };
+  const smokingScores = {
+    "non-smoker": { score: 100, isNormal: true },
+    "ex-smoker": { score: 70, isNormal: false },
+    "current-smoker": { score: 0, isNormal: false },
+  };
 
-    if (!(smokingStatus in smokingScores)) {
-        throw new Error("Invalid smoking status. Expected 'non-smoker', 'ex-smoker', or 'current-smoker'.");
-    }
+  if (!(smokingStatus in smokingScores)) {
+    throw new Error(
+      "Invalid smoking status. Expected 'non-smoker', 'ex-smoker', or 'current-smoker'."
+    );
+  }
 
-    return smokingScores[smokingStatus];
+  return smokingScores[smokingStatus];
 };
 
 // Testing the function with valid and invalid inputs
@@ -25,13 +27,13 @@ exports.calculateSmokingScore = function calculateSmokingScore(smokingStatus) {
 // try {
 //   console.log(calculateSmokingScore('occasional-smoker')); // Invalid input
 // } catch (error) {
-//   console.log(error.message); 
+//   console.log(error.message);
 //   // Outputs: "Invalid smoking status. Expected one of ['non-smoker', 'ex-smoker', 'current-smoker']."
 // }
 
 // try {
 //   console.log(calculateSmokingScore(null)); // Missing input
 // } catch (error) {
-//   console.log(error.message); 
+//   console.log(error.message);
 //   // Outputs: "Invalid smoking status. Expected one of ['non-smoker', 'ex-smoker', 'current-smoker']."
 // }

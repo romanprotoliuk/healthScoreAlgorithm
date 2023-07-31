@@ -1,43 +1,83 @@
-exports.calculatePhysicalActivityScore = function calculatePhysicalActivityScore(activityData) {
+exports.calculatePhysicalActivityScore =
+  function calculatePhysicalActivityScore(activityData) {
     // Define activity levels and their corresponding scores
     const activityLevels = {
-        sedentary: { score: 0, description: "Sedentary lifestyle with little or no exercise." },
-        light: { score: 30, description: "Light activity, such as walking or standing, for less than 2 hours per day." },
-        moderate: { score: 60, description: "Moderate activity, such as brisk walking or light exercise, for 2-4 hours per day." },
-        active: { score: 80, description: "Active lifestyle with moderate exercise for 4-6 hours per day." },
-        veryActive: { score: 100, description: "Very active lifestyle with vigorous exercise for more than 6 hours per day." }
+      sedentary: {
+        score: 0,
+        description: "Sedentary lifestyle with little or no exercise.",
+      },
+      light: {
+        score: 30,
+        description:
+          "Light activity, such as walking or standing, for less than 2 hours per day.",
+      },
+      moderate: {
+        score: 60,
+        description:
+          "Moderate activity, such as brisk walking or light exercise, for 2-4 hours per day.",
+      },
+      active: {
+        score: 80,
+        description:
+          "Active lifestyle with moderate exercise for 4-6 hours per day.",
+      },
+      veryActive: {
+        score: 100,
+        description:
+          "Very active lifestyle with vigorous exercise for more than 6 hours per day.",
+      },
     };
 
     // Validate activityData
-    if (!activityData || typeof activityData !== 'object') {
-        throw new Error("Invalid activity data. Please provide an object with activity details.");
+    if (!activityData || typeof activityData !== "object") {
+      throw new Error(
+        "Invalid activity data. Please provide an object with activity details."
+      );
     }
 
-    const { activityType, duration, stepsPerDay, heartRate, recoveryTime } = activityData;
+    const { activityType, duration, stepsPerDay, heartRate, recoveryTime } =
+      activityData;
 
-    if (!activityType || typeof activityType !== 'string' || !activityLevels.hasOwnProperty(activityType.toLowerCase())) {
-        throw new Error("Invalid activity type. Please provide a valid activity type.");
+    if (
+      !activityType ||
+      typeof activityType !== "string" ||
+      !activityLevels.hasOwnProperty(activityType.toLowerCase())
+    ) {
+      throw new Error(
+        "Invalid activity type. Please provide a valid activity type."
+      );
     }
 
-    if (!duration || typeof duration !== 'number' || duration < 0) {
-        throw new Error("Invalid duration. Please provide a non-negative number for activity duration.");
+    if (!duration || typeof duration !== "number" || duration < 0) {
+      throw new Error(
+        "Invalid duration. Please provide a non-negative number for activity duration."
+      );
     }
 
-    if (typeof stepsPerDay !== 'number' || stepsPerDay < 0) {
-        throw new Error("Invalid steps per day. Please provide a non-negative number for steps per day.");
+    if (typeof stepsPerDay !== "number" || stepsPerDay < 0) {
+      throw new Error(
+        "Invalid steps per day. Please provide a non-negative number for steps per day."
+      );
     }
 
-    if (typeof heartRate !== 'number' || heartRate < 0) {
-        throw new Error("Invalid heart rate. Please provide a non-negative number for heart rate.");
+    if (typeof heartRate !== "number" || heartRate < 0) {
+      throw new Error(
+        "Invalid heart rate. Please provide a non-negative number for heart rate."
+      );
     }
 
-    if (typeof recoveryTime !== 'number' || recoveryTime < 0) {
-        throw new Error("Invalid recovery time. Please provide a non-negative number for recovery time.");
+    if (typeof recoveryTime !== "number" || recoveryTime < 0) {
+      throw new Error(
+        "Invalid recovery time. Please provide a non-negative number for recovery time."
+      );
     }
 
     // Calculate the Physical Activity Score based on the activity level and duration (in hours)
     const activityLevel = activityLevels[activityType.toLowerCase()];
-    const scoreFromDuration = Math.min(100, activityLevel.score * (duration / 24)); // Normalize the score for a 24-hour period
+    const scoreFromDuration = Math.min(
+      100,
+      activityLevel.score * (duration / 24)
+    ); // Normalize the score for a 24-hour period
 
     // Calculate the Physical Activity Score based on the steps per day
     const stepsScore = Math.min(100, (stepsPerDay / 10000) * 100); // Normalize the steps score for a goal of 10,000 steps
@@ -52,15 +92,15 @@ exports.calculatePhysicalActivityScore = function calculatePhysicalActivityScore
     const roundedRecoveryTime = Math.round(recoveryTime * 100) / 100; // Round to two decimal places
 
     return {
-        score: combinedScore,
-        activityType: activityType,
-        duration: roundedDuration,
-        stepsPerDay: roundedStepsPerDay,
-        heartRate: roundedHeartRate,
-        recoveryTime: roundedRecoveryTime,
-        description: activityLevel.description
+      score: combinedScore,
+      activityType: activityType,
+      duration: roundedDuration,
+      stepsPerDay: roundedStepsPerDay,
+      heartRate: roundedHeartRate,
+      recoveryTime: roundedRecoveryTime,
+      description: activityLevel.description,
     };
-};
+  };
 
 // Dataset 1
 // valid
@@ -83,7 +123,7 @@ exports.calculatePhysicalActivityScore = function calculatePhysicalActivityScore
 // //   description: 'Moderate activity, such as brisk walking or light exercise, for 2-4 hours per day.'
 // // }
 
-// Invalid 
+// Invalid
 // try {
 //     console.log(calculatePhysicalActivityScore(null)); // Invalid input
 // } catch (error) {
@@ -150,7 +190,6 @@ exports.calculatePhysicalActivityScore = function calculatePhysicalActivityScore
 //     console.log(error.message); // Outputs: "Invalid recovery time. Please provide a non-negative number for recovery time."
 // }
 
-
 // Dataset 2
 // Valid
 // console.log(calculatePhysicalActivityScore({
@@ -172,7 +211,6 @@ exports.calculatePhysicalActivityScore = function calculatePhysicalActivityScore
 // //   description: 'Sedentary lifestyle with little or no exercise.'
 // // }
 
-
 // Dataset 3
 // Valid
 // console.log(calculatePhysicalActivityScore({
@@ -193,10 +231,6 @@ exports.calculatePhysicalActivityScore = function calculatePhysicalActivityScore
 // //   recoveryTime: 4.5,
 // //   description: 'Very active lifestyle with vigorous exercise for more than 6 hours per day.'
 // // }
-
-
-
-
 
 // The calculatePhysicalActivityScore function is a meticulously crafted algorithm designed to provide an accurate assessment of an individual's physical activity score, leveraging a rich dataset encapsulated within the activityData object. By incorporating multiple parameters, this function allows for a holistic evaluation of an individual's physical activity level, granting valuable insights into their overall health and well-being.
 
