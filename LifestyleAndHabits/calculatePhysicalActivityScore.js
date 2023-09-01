@@ -38,6 +38,8 @@ exports.calculatePhysicalActivityScore =
     const { activityType, duration, stepsPerDay, heartRate, recoveryTime } =
       activityData;
 
+      console.log("duration from calculate physical act", duration)
+
     if (
       !activityType ||
       typeof activityType !== "string" ||
@@ -91,6 +93,12 @@ exports.calculatePhysicalActivityScore =
     const roundedHeartRate = Math.round(heartRate * 100) / 100; // Round to two decimal places
     const roundedRecoveryTime = Math.round(recoveryTime * 100) / 100; // Round to two decimal places
 
+    const normalThreshold = 60;
+
+    // Determine if the combined score is normal
+    const isNormal = combinedScore >= normalThreshold;
+
+
     return {
       score: combinedScore,
       activityType: activityType,
@@ -99,6 +107,7 @@ exports.calculatePhysicalActivityScore =
       heartRate: roundedHeartRate,
       recoveryTime: roundedRecoveryTime,
       description: activityLevel.description,
+      isNormal
     };
   };
 

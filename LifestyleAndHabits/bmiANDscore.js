@@ -1,63 +1,60 @@
-exports.calculateBmiAndScore = function calculateBmiAndScore(
-  weight,
-  height,
-  weightUnit = "kg",
-  heightUnit = "cm",
-  inches = 0
-) {
+exports.calculateBmiAndScore = function calculateBmiAndScore(weight, height, weightUnit, heightUnit, inches = 0) {
+
+  console.log("from calculate Bmi", weight, height, weightUnit, heightUnit, inches)
   // Check for non-zero, positive number inputs
   if (weight <= 0 || height <= 0) {
-    throw new Error("Invalid weight or height. Both must be positive numbers.");
+      throw new Error("Invalid weight or height. Both must be positive numbers.");
   }
 
-  // Check for reasonable weight values
-  if (
-    (weightUnit === "kg" && (weight < 1 || weight > 300)) ||
-    (weightUnit === "lbs" && (weight < 2.2 || weight > 661))
-  ) {
-    throw new Error(
-      "Invalid weight. Weight must be between 1kg and 300kg, or between 2.2lbs and 661lbs."
-    );
-  }
+  let bmi;
 
-  // Check for reasonable height values
-  if (
-    (heightUnit === "cm" && (height < 50 || height > 250)) ||
-    (heightUnit === "m" && (height < 0.5 || height > 2.5)) ||
-    (heightUnit === "ft" && (height < 1.6 || height > 8.2))
-  ) {
-    throw new Error(
-      "Invalid height. Height must be between 50cm and 250cm, between 0.5m and 2.5m, or between 1.6ft and 8.2ft."
-    );
+  // Calculate BMI based on imperial system
+  if (weightUnit === "lbs" && heightUnit === "ft") {
+      bmi = calculateBmiImperial(weight, height, inches);
   }
-
-  // Convert weight to kg if it's in lbs
-  if (weightUnit === "lbs") {
-    weight = weight * 0.453592;
-  } else if (weightUnit !== "kg") {
-    throw new Error("Invalid weight unit. Expected 'kg' or 'lbs'.");
-  }
-
-  let heightInMeters;
-  if (heightUnit === "cm") {
-    heightInMeters = height / 100;
-  } else if (heightUnit === "m") {
-    heightInMeters = height;
-  } else if (heightUnit === "ft") {
-    heightInMeters = (height * 12 * 2.54 + inches * 2.54) / 100;
+  // Calculate BMI based on metric system
+  else if (weightUnit === "kg") {
+      if (heightUnit === "cm") {
+          height = height / 100;  // Convert height to meters if it's in cm
+      }
+      bmi = calculateBmiMetric(weight, height);
   } else {
-    throw new Error("Invalid height unit. Expected 'cm', 'm', or 'ft'.");
+      throw new Error("Invalid combination of weight and height units.");
   }
 
-  const bmi =
-    Math.floor((weight / (heightInMeters * heightInMeters)) * 10) / 10;
-
-  const score =
-    Math.floor(Math.max(0, Math.min(100, 100 - (bmi - 18.5) * 2)) * 10) / 10;
+  // Calculate score based on BMI
+  const score = Math.floor(Math.max(0, Math.min(100, 100 - (bmi - 18.5) * 2)) * 10) / 10;
   const isNormal = bmi >= 18.5 && bmi <= 24.9;
 
   return { bmi, score, isNormal };
 };
+
+
+
+
+
+function calculateBmiMetric(weightKG, heightCM) {
+  const heightM = heightCM / 100;  // Convert centimeters to meters
+  if (heightM <= 0) {
+      throw new Error("Height in centimeters must be a positive value.");
+  }
+  return weightKG / (heightM * heightM);
+}
+
+
+
+function calculateBmiImperial(weightLBS, heightFT, heightIN) {
+  const heightTotalInches = heightFT * 12 + heightIN;
+  if (heightTotalInches <= 0) {
+      throw new Error("Combined height (feet + inches) must be a positive value.");
+  }
+  
+  const weightKg = weightLBS * 0.453592;
+  const heightM = heightTotalInches * 0.0254;
+
+  return weightKg / (heightM * heightM);
+}
+
 
 // // Testing the function with valid and invalid inputs
 // console.log(healthScore.calculateBmiAndScore(70, 180));

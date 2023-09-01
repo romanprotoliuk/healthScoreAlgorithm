@@ -28,6 +28,8 @@ module.exports.getHealthScore = function getHealthScore(
   gender,
   weight,
   height,
+  weightUnit,
+  heightUnit,
   systolicBP,
   diastolicBP,
   smokingStatus,
@@ -37,8 +39,6 @@ module.exports.getHealthScore = function getHealthScore(
   sleepData,
   dietaryHabitsData,
   stressLevelData,
-  weightUnit = "kg",
-  heightUnit = "cm",
   inches = 0
 ) {
   // Validations
@@ -72,6 +72,7 @@ module.exports.getHealthScore = function getHealthScore(
     throw new Error("Gender and smokingStatus must be strings.");
   }
 
+  console.log("height from getHealthScore", height)
   const bmiResult = calculateBmiAndScore(
     weight,
     height,
@@ -152,6 +153,7 @@ module.exports.getHealthScore = function getHealthScore(
         value: alcoholConsumption,
         score: alcoholResult.score,
         category: alcoholResult.category,
+        isNormal: alcoholResult.isNormal,
       },
       physicalActivity: {
         activityType: activityData.activityType,
@@ -161,6 +163,7 @@ module.exports.getHealthScore = function getHealthScore(
         recoveryTime: activityData.recoveryTime,
         score: physicalActivityResult.score,
         description: physicalActivityResult.description,
+        isNormal: physicalActivityResult.isNormal
       },
       sleep: {
         averageSleepDuration: sleepResult.averageSleepDuration,
@@ -172,6 +175,7 @@ module.exports.getHealthScore = function getHealthScore(
         score: sleepResult.sleepScore,
         sleepQualityLabel: sleepResult.sleepQualityLabel,
         sleepIdentifier: "Weekly average",
+        isNormal: sleepResult.isNormal
       },
       dietaryHabits: {
         score: dietaryHabitsResult.score,

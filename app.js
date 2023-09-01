@@ -36,7 +36,7 @@ const { getHealthScore } = require("./healthScore");
 const sampleActivityData = {
   activityType: "moderate",
   duration: 180, // minutes
-  stepsPerDay: 8000,
+  stepsPerDay: 100,
   heartRate: 75,
   recoveryTime: 6, // hours
 };
@@ -115,6 +115,7 @@ const sampleSleepData = {
   ],
 };
 
+// dietery habets 
 const userData2 = {
   dietType: "vegetarian",
   mealPortions: "small",
@@ -136,33 +137,156 @@ const stressData = {
 const sampleData = {
   age: 30,
   gender: "male",
-  weight: 75, // kg
-  height: 180, // cm
+  weight: 100, // kg
+  height: 175, // cm
   systolicBP: 120,
   diastolicBP: 80,
   smokingStatus: "non-smoker",
   glucoseLevels: 90, // mg/dL
-  alcoholConsumption: 20, // %
+  alcoholConsumption: 2, // drinks per week 
   activityData: sampleActivityData,
   sleepData: sampleSleepData,
   dietaryHabitsData: userData2,
   stressLevelData: stressData,
 };
 
-const result = getHealthScore(
-  sampleData.age,
-  sampleData.gender,
-  sampleData.weight,
-  sampleData.height,
-  sampleData.systolicBP,
-  sampleData.diastolicBP,
-  sampleData.smokingStatus,
-  sampleData.glucoseLevels,
-  sampleData.alcoholConsumption,
-  sampleData.activityData,
-  sampleData.sleepData,
-  sampleData.dietaryHabitsData,
-  sampleData.stressLevelData
+// const result = getHealthScore(
+//   sampleData.age,
+//   sampleData.gender,
+//   sampleData.weight,
+//   sampleData.height,
+//   sampleData.systolicBP,
+//   sampleData.diastolicBP,
+//   sampleData.smokingStatus,
+//   sampleData.glucoseLevels,
+//   sampleData.alcoholConsumption,
+//   sampleData.activityData,
+//   sampleData.sleepData,
+//   sampleData.dietaryHabitsData,
+//   sampleData.stressLevelData
+// );
+
+
+function processUserData(data) {
+  if (data.measurementSystem === 'metric') {
+      return {
+          age: data.age,
+          gender: "male",
+          height: +(data.heightCM.toFixed(1)),
+          weightUnit: "kg",
+          heightUnit: "cm",
+          weight: +(data.weightKG.toFixed(4)),
+          inches: 0,
+          activityData: data.activityData,
+          sleepData: data.sleepData,
+          stressLevelData: data.stressLevelData,
+          smokingStatus: data.smokingStatus,
+          alcoholConsumption: data.alcoholConsumption,
+          systolicBP: data.systolicBP,
+          diastolicBP: data.diastolicBP,
+          glucoseLevels: data.glucoseLevels,
+          dietaryHabitsData: data.dietaryHabitsData
+      };
+  } else if (data.measurementSystem === 'imperial') {
+      return {
+          age: data.age,
+          gender: "male",
+          height: data.heightFT,
+          weightUnit: "lbs",
+          heightUnit: "ft",
+          weight: data.weightLBS,
+          inches: data.heightIN,
+          activityData: data.activityData,
+          sleepData: data.sleepData,
+          stressLevelData: data.stressLevelData,
+          smokingStatus: data.smokingStatus,
+          alcoholConsumption: data.alcoholConsumption,
+          systolicBP: data.systolicBP,
+          diastolicBP: data.diastolicBP,
+          glucoseLevels: data.glucoseLevels,
+          dietaryHabitsData: data.dietaryHabitsData
+      };
+  }
+}
+
+
+
+const sampleRefactorDataFrom = {
+  "age": 23,
+  "gender": "male",
+  "measurementSystem": "metric",
+  "weightKG": 70,
+  "heightCM": 175,
+  "heightFT": 0,
+  "heightIN": 0,
+  "weightLBS": 0,
+  "activityData": {
+      "activityType": "sedentary",
+      "duration": 50,
+      "stepsPerDay": 11000,
+      "heartRate": 47,
+      "recoveryTime": 40
+  },
+  "sleepData": {
+      "nights": [
+          {
+              "date": "2023-08-24",
+              "totalTime": 7,
+              "remTime": 2,
+              "deepTime": 2,
+              "heartRate": 47,
+              "heartRateVariability": 87
+          }
+      ]
+  },
+  "stressLevelData": {
+      "dailyRoutine": 8,
+      "emotionalWellBeing": 6,
+      "socialSupport": 9,
+      "workRelatedStress": 6,
+      "stressCopingMechanisms": 7,
+      "lifeEvents": 5,
+      "stressPerception": 8
+  },
+  "smokingStatus": "non-smoker",
+  "alcoholConsumption": 5,
+  "systolicBP": 122,
+  "diastolicBP": 79,
+  "glucoseLevels": 72,
+  "dietaryHabitsData": {
+      "dietType": "balanced",
+      "mealPortions": "regular",
+      "junkFoodIntake": "often",
+      "hydration": 11,
+      "addedSugarsIntake": 35
+  }
+}
+
+
+const sampleRefactoredOutput = processUserData(sampleRefactorDataFrom)
+console.log("sample refactor data", sampleRefactoredOutput)
+
+const result2 = getHealthScore(
+  sampleRefactoredOutput.age,
+  sampleRefactoredOutput.gender,
+  sampleRefactoredOutput.weight,
+  sampleRefactoredOutput.height,
+  sampleRefactoredOutput.weightUnit,
+  sampleRefactoredOutput.heightUnit,
+  sampleRefactoredOutput.systolicBP,
+  sampleRefactoredOutput.diastolicBP,
+  sampleRefactoredOutput.smokingStatus,
+  sampleRefactoredOutput.glucoseLevels,
+  sampleRefactoredOutput.alcoholConsumption,
+  sampleRefactoredOutput.activityData,
+  sampleRefactoredOutput.sleepData,
+  sampleRefactoredOutput.dietaryHabitsData,
+  sampleRefactoredOutput.stressLevelData
 );
 
-console.log(result);
+ console.log(result2)
+
+// console.log(sampleRefactoredOutput)
+
+
+// console.log(result);

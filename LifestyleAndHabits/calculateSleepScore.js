@@ -104,6 +104,41 @@ exports.calculateSleepScore = function calculateSleepScore(sleepData) {
       6
   );
 
+  // Define the threshold for considering average sleep duration as normal
+  const normalSleepDurationThreshold = 7; // 7 hours
+
+  // Define the range for considering sleep quality as normal
+  const normalSleepQualityRange = {
+    min: 0.75, // Minimum sleep quality score for normal sleep
+    max: 1.0, // Maximum sleep quality score for normal sleep
+  };
+
+  // Define the range for considering heart rate variability as normal
+  const normalHeartRateVariabilityRange = {
+    min: 40, // Minimum average heart rate variability for normal sleep
+    max: 50, // Maximum average heart rate variability for normal sleep
+  };
+
+  // Determine if the average sleep duration is normal
+  const isNormalSleepDuration =
+    averageSleepDuration >= normalSleepDurationThreshold;
+
+  // Determine if the sleep quality is normal
+  const isNormalSleepQuality =
+    averageSleepQuality >= normalSleepQualityRange.min &&
+    averageSleepQuality <= normalSleepQualityRange.max;
+
+  // Determine if the heart rate variability is normal
+  const isNormalHeartRateVariability =
+    averageHeartRateVariability >= normalHeartRateVariabilityRange.min &&
+    averageHeartRateVariability <= normalHeartRateVariabilityRange.max;
+
+  // Consider all factors to determine if the sleep is normal or not
+  const isNormal =
+    isNormalSleepDuration &&
+    isNormalSleepQuality &&
+    isNormalHeartRateVariability;
+
   // Return the sleep score and other relevant data
   return {
     sleepScore,
@@ -114,5 +149,6 @@ exports.calculateSleepScore = function calculateSleepScore(sleepData) {
     averageHeartRateVariability,
     sleepQuality: Math.round(averageSleepQuality * 100), // Provide the normalized sleep quality value between 0 and 1
     sleepQualityLabel,
+    isNormal,
   };
 };

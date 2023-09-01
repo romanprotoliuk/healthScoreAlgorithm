@@ -8,20 +8,25 @@ exports.calculateAlcoholScore = function calculateAlcoholScore(weeklyDrinks) {
 
   let score;
   let category;
+  let isNormal;
 
   if (weeklyDrinks === 0) {
     score = 100;
     category = "Non-drinker";
+    isNormal = true;
   } else if (weeklyDrinks <= 3) {
     score = 80;
     category = "Low alcohol consumption";
+    isNormal = true;
   } else if (weeklyDrinks <= 7) {
     score = 50;
     category = "Moderate alcohol consumption";
+    isNormal = false;
   } else {
     score = 20;
     category = "High alcohol consumption";
+    isNormal = false;
   }
 
-  return { score, category };
+  return { score, category, isNormal };
 };
