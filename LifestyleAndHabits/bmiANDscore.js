@@ -1,4 +1,4 @@
-exports.calculateBmiAndScore = function calculateBmiAndScore(weight, height, weightUnit, heightUnit, inches = 0) {
+exports.calculateBmiAndScore = function calculateBmiAndScore(weight, height, weightUnit, heightUnit, inches) {
 
   console.log("from calculate Bmi", weight, height, weightUnit, heightUnit, inches)
   // Check for non-zero, positive number inputs
@@ -31,19 +31,18 @@ exports.calculateBmiAndScore = function calculateBmiAndScore(weight, height, wei
 
 
 
-
-
-function calculateBmiMetric(weightKG, heightCM) {
-  const heightM = heightCM / 100;  // Convert centimeters to meters
+function calculateBmiMetric(weightKg, heightM) {
   if (heightM <= 0) {
-      throw new Error("Height in centimeters must be a positive value.");
+      throw new Error("Height must be a positive value.");
   }
-  return weightKG / (heightM * heightM);
+  return weightKg / (heightM * heightM);
 }
 
 
-
 function calculateBmiImperial(weightLBS, heightFT, heightIN) {
+  console.log("expected lbs", weightLBS)
+  console.log("expected ft", heightFT)
+  console.log("expected in", heightIN)
   const heightTotalInches = heightFT * 12 + heightIN;
   if (heightTotalInches <= 0) {
       throw new Error("Combined height (feet + inches) must be a positive value.");
@@ -51,6 +50,11 @@ function calculateBmiImperial(weightLBS, heightFT, heightIN) {
   
   const weightKg = weightLBS * 0.453592;
   const heightM = heightTotalInches * 0.0254;
+
+  console.log(`weightKg: ${weightKg}`);
+console.log(`heightM: ${heightM}`);
+console.log(`bmi: ${weightKg / (heightM * heightM)}`);
+
 
   return weightKg / (heightM * heightM);
 }

@@ -39,7 +39,7 @@ module.exports.getHealthScore = function getHealthScore(
   sleepData,
   dietaryHabitsData,
   stressLevelData,
-  inches = 0
+  inches
 ) {
   // Validations
   if (

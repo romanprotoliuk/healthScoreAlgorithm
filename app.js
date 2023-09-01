@@ -214,12 +214,12 @@ function processUserData(data) {
 const sampleRefactorDataFrom = {
   "age": 23,
   "gender": "male",
-  "measurementSystem": "metric",
-  "weightKG": 70,
-  "heightCM": 175,
-  "heightFT": 0,
-  "heightIN": 0,
-  "weightLBS": 0,
+  "measurementSystem": "imperial",
+  "weightKG": 0,
+  "heightCM": 0,
+  "heightFT": 5,
+  "heightIN": 9,
+  "weightLBS": 154,
   "activityData": {
       "activityType": "sedentary",
       "duration": 50,
@@ -281,7 +281,8 @@ const result2 = getHealthScore(
   sampleRefactoredOutput.activityData,
   sampleRefactoredOutput.sleepData,
   sampleRefactoredOutput.dietaryHabitsData,
-  sampleRefactoredOutput.stressLevelData
+  sampleRefactoredOutput.stressLevelData,
+  sampleRefactoredOutput.inches
 );
 
  console.log(result2)
