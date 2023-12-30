@@ -21,6 +21,8 @@ To illustrate this in the context of the health score algorithm, consider the BM
 #### Return data
 
 **Healthy young adult**
+
+```bash
 {
 "finalScore": 92.3,
 "age": 24,
@@ -49,6 +51,7 @@ To illustrate this in the context of the health score algorithm, consider the BM
 }
 }
 }
+```
 
 **Middle-aged Overweight Smoker**
 
